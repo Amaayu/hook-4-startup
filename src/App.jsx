@@ -7,13 +7,6 @@ import Postpage from "./pages/post/Postpage";
 import { Routes, Route } from "react-router-dom";
 import axios from "axios";
 const App = () => {
-  const [Data, setData] = useState([]);
-  useEffect(() => {
-    axios.get("http://localhost:3003").then((res) => {
-      setData(res.data);
-    });
-  }, []);
-  console.log(Data);
   return (
     <>
       <Routes>
