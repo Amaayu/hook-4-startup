@@ -1,0 +1,50 @@
+.content {
+  display: inline-block;
+  position: relative;
+  top: 5rem;
+  border: 1px solid #100f0f9f;
+  border-radius: 20px;
+  padding: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
+  margin-bottom: 15px;
+}
+.content p {
+  font-weight: 300;
+  font-size: 0.9rem;
+  line-height: 1.4rem;
+  padding: 5px;
+}
+.top-row {
+  display: flex;
+  margin-bottom: 10px;
+  gap: 0.8rem;
+  align-items: center;
+}
+.content .img-1 {
+  width: 8vw;
+  object-fit: cover;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.like-row {
+  display: flex;
+  margin-top: 14px;
+  justify-content: space-between;
+}
+.like-row .like-left {
+  display: flex;
+  gap: 0.8rem;
+}
+.like-row .like-left img {
+  display: inline-block;
+  margin-top: 1px;
+  padding: 1px;
+  width: 2rem;
+  height: 1.4rem;
+}
+.top-row h4 {
+  font-weight: 400;
+  font-size: 1rem;
+}
