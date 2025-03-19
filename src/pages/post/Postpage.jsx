@@ -1,15 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ Navigation ke liye
 import "./Postpage.css";
 import Footer from "../../components/footer/Footer";
+import { getToken } from "../../pages/feed/Feed";
 
 const Postpage = () => {
+  const token = getToken(); // ✅ Token ko get karne ke liye
+  console.log("🔐 Token in Card:", token);
+  const [content, setContent] = useState(""); // ✅ Idea ko store karo
+  const navigate = useNavigate(); // ✅ Navigation object
+
+  // 🚀 API Call for Post
+  const handlePostSubmit = async () => {
+    if (!content.trim()) {
+      alert("⚠️ Please write something to pitch!");
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "https://hook4startup-bakend-java-dev.onrender.com/post/create",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // ✅ Token sahi se bhej raha hai
+          },
+          credentials: "include",
+          body: JSON.stringify({
+            content: content, // ✅ Payload bhejo
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("✅ Post Created Successfully!");
+        navigate("/feed"); // 🧭 Redirect to Feed
+      } else {
+        console.error("❌ Failed to create post.");
+      }
+    } catch (error) {
+      console.error("🔥 Error in posting idea:", error.message);
+    }
+  };
+
   return (
     <>
       <div className="post">
         <div className="nav-2">
-          <i class="ri-arrow-left-line"></i>
+          <i
+            className="ri-arrow-left-line"
+            onClick={() => navigate("/feed")}
+          ></i>
           <p>Upload Post</p>
         </div>
+
         <div className="post-mid">
           <div className="post-img">
             <i className="ri-image-circle-line"></i>
@@ -17,15 +62,25 @@ const Postpage = () => {
           </div>
 
           <div className="post-vid">
-            {" "}
             <i className="ri-video-upload-line"></i>
             <p>video</p>
           </div>
         </div>
+
         <div className="post-inp">
-          <input type="text" placeholder="Write your idea" />
+          <input
+            type="text"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="Write your idea"
+          />
         </div>
-        <div className="btn-2">pitch your idea</div>
+
+        {/* ✅ Button pe click hote hi API call */}
+        <div className="btn-2" onClick={handlePostSubmit}>
+          pitch your idea
+        </div>
+
         <Footer />
       </div>
     </>

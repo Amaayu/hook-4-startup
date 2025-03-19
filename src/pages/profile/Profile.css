@@ -1,5 +1,8 @@
 .profile {
-  height: 100vh;
+  min-height: 100vh; /* ✅ Fix for height overflow */
+  position: relative;
+  overflow-x: hidden;
+  padding-bottom: 5rem; /* ✅ Space for footer */
 }
 
 .mid-row {
@@ -34,7 +37,6 @@
   border-radius: 50%;
   overflow: hidden;
   border: 5px solid #5cbcca;
-
   box-shadow: 0 2px 4px darkslategray;
 }
 .profile .nav-1 {
@@ -42,8 +44,6 @@
   height: 63px;
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  height: 63px;
   align-items: center;
   padding: 0px 1.6rem;
 }
@@ -53,24 +53,31 @@
   font-size: 23px;
   font-weight: 400;
 }
+
+/* ✅ mid-row-1 and image fix */
+.mid-row-1 {
+  position: relative;
+  width: 100%;
+  height: 16rem;
+  margin-top: 1.5rem; /* ✅ Added spacing */
+}
 .mid-row-1 img {
   display: inline-block;
   width: 100%;
-  position: absolute;
-  top: 15.6rem;
   height: 16rem;
   object-fit: cover;
   object-position: 0% 65%;
-  left: -0.8px;
 }
+
+/* ✅ Follow row position fix */
 .follow-row {
   width: 100%;
-  height: 16rem;
+  height: auto;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: absolute;
-  top: 16rem;
+  margin-top: 2rem; /* ✅ Added space to avoid overlap */
+  position: relative;
 }
 .follow-row h4 {
   color: white;
@@ -92,12 +99,12 @@
   flex-direction: column;
   align-items: center;
 }
-.profile .content .like-row {
-  display: none;
-}
+
+/* ✅ Footer Padding Fix */
 .profile .content {
   position: relative;
   top: 8rem;
+  margin-bottom: 5rem; /* ✅ Added space for footer */
 }
 .profile i img {
   width: 5px;

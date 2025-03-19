@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import "./Footer.css";
 
@@ -10,7 +10,7 @@ const Footer = () => {
           <NavLink to="/feed" className="log-3">
             <i className="ri-home-6-line"></i>
           </NavLink>
-          <NavLink to="/feed" className="log-3">
+          <NavLink to="/search" className="log-3">
             <i className="ri-search-2-line"></i>
           </NavLink>
         </div>
@@ -19,13 +19,13 @@ const Footer = () => {
         </NavLink>
         <span>pitch-idea</span>
         <div className="fot-right">
-          <NavLink to="/feed" className="log-3">
+          <NavLink to="/notifications" className="log-3">
             <i className="ri-notification-2-line"></i>
           </NavLink>
 
           <NavLink to="/profile" className="log-2">
             <img
-              src="https://res.cloudinary.com/dijzsv2tt/image/upload/v1702932131/wnjynhj7jft7vzo4frg3.jpg"
+              src={"https://pfpmaker.com/images/ai/examples/first/pic-1.png"}
               alt="icon"
             />
           </NavLink>

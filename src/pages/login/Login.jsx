@@ -1,21 +1,68 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
+import Cookies from "js-cookie"; // ✅ Token ke liye
 import "./Login.css";
 
 const Login = () => {
   const [userIsLoading, setUserIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false); // ✅ Button loader state
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   useEffect(() => {
     if (userIsLoading) {
-      navigate("/feed");
+      navigate("/feed"); // ✅ Feed pe le jao agar user load ho jaye
     }
-  }, [userIsLoading, navigate]); // ✅ Dependency array सही किया
+  }, [userIsLoading, navigate]);
 
+  // 🚀 Prefetch Posts and Cache in Local Storage
+  const prefetchPosts = async () => {
+    const token = Cookies.get("session_token");
+
+    if (!token) {
+      console.warn("⚠️ Session token not found!");
+      return;
+    }
+
+    try {
+      const cachedPosts = localStorage.getItem("cachedPosts");
+
+      if (cachedPosts) {
+        console.log("🚀 Using Cached Posts");
+        navigate("/feed"); // ✅ Feed pe le jao agar user load ho jaye
+        return;
+      }
+
+      const response = await fetch(
+        "https://hook4startup-bakend-java-dev.onrender.com/post/all",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+        }
+      );
+
+      if (!response.ok) {
+        console.error("❌ Failed to prefetch posts:", response.statusText);
+        return;
+      }
+
+      const postsData = await response.json();
+      console.log("✅ Prefetched Posts:", postsData);
+      localStorage.setItem("cachedPosts", JSON.stringify(postsData)); // 🆕 New posts cache
+    } catch (error) {
+      console.error("🔥 Error prefetching posts:", error.message);
+    }
+  };
+
+  // 🔥 API Call to Login
   const mySubmitHandler = async (e) => {
     e.preventDefault();
+    setIsLoading(true); // ✅ Loading start karo
     const data = { username, password };
 
     try {
@@ -25,33 +72,45 @@ const Login = () => {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(data),
+          credentials: "include",
         }
       );
 
       if (response.ok) {
-        console.log("Login successful!");
-        setUserIsLoading(true);
-        console.log("User is loading:", userIsLoading);
+        const data = await response.json();
+        console.log("✅ Login successful!");
+        sessionStorage.setItem("userData", JSON.stringify(data.user));
 
-        navigate("/feed");
+        // 🚀 Prefetch and Cache posts after login
+        await prefetchPosts();
+
+        setIsLoading(false); // ✅ Loading stop
+        if (data.user.makeProfileStatus === false) {
+          navigate("/createprofile");
+        } else {
+          navigate("/feed");
+        }
       } else {
-        alert("Invalid username or password");
+        setIsLoading(false); // ✅ Agar error ho to bhi loading stop
+        alert("❌ Invalid username or password!");
       }
     } catch (error) {
-      console.error("Error:", error);
+      setIsLoading(false); // ✅ Error pe bhi loading hatao
+      console.error("🔥 Error:", error);
     }
   };
 
   return (
     <div className="login">
       <form className="form-1" onSubmit={mySubmitHandler}>
-        {" "}
-        {/* ✅ onSubmit form पर लगाया */}
+        {/* ✅ Logo */}
         <img
           className="logo-1"
           src="https://res.cloudinary.com/dijzsv2tt/image/upload/v1713021728/Logo_xxgb0i.png"
           alt="Hook4StartUp"
         />
+
+        {/* ✅ Username Input */}
         <div className="form-group">
           <input
             type="text"
@@ -63,6 +122,8 @@ const Login = () => {
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
+
+        {/* ✅ Password Input */}
         <div className="form-group">
           <input
             type="password"
@@ -74,10 +135,19 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button className="button-1" type="submit">
-          Login
-        </button>{" "}
-        {/* ✅ onSubmit हटाकर सही किया */}
+
+        {/* ✅ Login Button with Loading */}
+        <button className="button-1" type="submit" disabled={isLoading}>
+          {isLoading ? (
+            <>
+              <i className="ri-loader-4-line loader-icon"></i> Logging in...
+            </>
+          ) : (
+            "Login"
+          )}
+        </button>
+
+        {/* ✅ Signup Link */}
         <div className="war">
           <span>Don't have an account?</span>
           <NavLink to="/" className="log">

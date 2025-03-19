@@ -9,15 +9,17 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // ✅ Navigate to /feed if user is authenticated
   useEffect(() => {
     if (userIsLoading) {
       navigate("/feed");
     }
-  }, [userIsLoading, navigate]); // ✅ Dependency array सही किया
+  }, [userIsLoading, navigate]);
 
+  // ✅ Form submit handler
   const mySubmitHandler = async (e) => {
     e.preventDefault();
-    const data = { username, email, password };
+    const paylode = { username, email, password };
 
     try {
       const response = await fetch(
@@ -25,15 +27,23 @@ const Signup = () => {
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
+          body: JSON.stringify(paylode),
+          credentials: "include", // ✅ Allow cookies
         }
       );
 
       if (response.ok) {
+        const data = await response.json();
         console.log("Signup successful!");
         setUserIsLoading(true);
-        console.log("User is loading:", userIsLoading);
-        navigate("/feed");
+        // ✅ Save user data in sessionStorage
+        sessionStorage.setItem("userData", JSON.stringify(data.user));
+        console.log(data.user.makeProfileStatus);
+        if (data.user.makeProfileStatus === false) {
+          navigate("/createprofile");
+        } else {
+          navigate("/feed");
+        }
       } else {
         alert("Signup failed! Try again.");
       }
@@ -55,8 +65,6 @@ const Signup = () => {
       </h2>
 
       <form onSubmit={mySubmitHandler}>
-        {" "}
-        {/* ✅ onSubmit form पर लगाया */}
         <div className="form-group">
           <input
             type="text"
