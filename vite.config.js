@@ -15,6 +15,25 @@
 //   },
 // });
 
+// import { defineConfig } from "vite";
+// import react from "@vitejs/plugin-react";
+
+// export default defineConfig({
+//   plugins: [react()],
+//   server: {
+//     host: "0.0.0.0", // ✅ Docker ke liye zaroori
+//     port: 3000, // ✅ Frontend ka port
+
+//     proxy: {
+//       "/": {
+//         target: "https://hook4startup-bakend-java-dev.onrender.com", // ✅ Backend URL
+//         changeOrigin: true,
+//         secure: true, // ✅ HTTPS backend ke liye true rakho
+//       },
+//     },
+//   },
+// });
+
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -31,5 +50,8 @@ export default defineConfig({
         secure: true, // ✅ HTTPS backend ke liye true rakho
       },
     },
+
+    // ✅ Add allowedHosts here
+    allowedHosts: ["hook-4-startup.onrender.com"], // ✅ Render pe host allow karo
   },
 });
