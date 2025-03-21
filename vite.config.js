@@ -17,7 +17,7 @@ export default defineConfig({
       "/api": {
         target: "https://hook4startup-bakend-java-dev.onrender.com", // ⚡️ Backend ka URL
         changeOrigin: true,
-        secure: false, // Agar https pe issue ho to
+        secure: true, // Agar https pe issue ho to
         rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
