@@ -15,25 +15,6 @@
 //   },
 // });
 
-// import { defineConfig } from "vite";
-// import react from "@vitejs/plugin-react";
-
-// export default defineConfig({
-//   plugins: [react()],
-//   server: {
-//     host: "0.0.0.0", // ✅ Docker ke liye zaroori
-//     port: 3000, // ✅ Frontend ka port
-
-//     proxy: {
-//       "/": {
-//         target: "https://hook4startup-bakend-java-dev.onrender.com", // ✅ Backend URL
-//         changeOrigin: true,
-//         secure: true, // ✅ HTTPS backend ke liye true rakho
-//       },
-//     },
-//   },
-// });
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 
@@ -42,16 +23,18 @@ export default defineConfig({
   server: {
     host: "0.0.0.0", // ✅ Docker ke liye zaroori
     port: 3000, // ✅ Frontend ka port
-
     proxy: {
-      "/": {
-        target: "https://hook4startup-bakend-java-dev.onrender.com", // ✅ Backend URL
+      "/api": {
+        target: "https://hook4startup-bakend-java-dev.onrender.com", // ✅ Backend
         changeOrigin: true,
-        secure: true, // ✅ HTTPS backend ke liye true rakho
+        secure: false, // ❗️ SSL verification ko bypass karo for local dev
+        rewrite: (path) => path.replace(/^\/api/, ""), // ✅ Path rewrite
       },
     },
-
-    // ✅ Add allowedHosts here
-    allowedHosts: ["hook-4-startup.onrender.com"], // ✅ Render pe host allow karo
+  },
+  preview: {
+    port: 4173,
+    host: "0.0.0.0",
+    allowedHosts: ["hook-4-startup.onrender.com"],
   },
 });
