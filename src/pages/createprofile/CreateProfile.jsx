@@ -3,6 +3,7 @@ import Footer from "../../components/footer/Footer";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import api from "../../../api/api";
 
 const CreateProfile = () => {
   const navigate = useNavigate();
@@ -45,17 +46,14 @@ const CreateProfile = () => {
   // 🚀 Prefetch and Cache Posts
   const prefetchPosts = async () => {
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/post/all",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${api}/post/all`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (!response.ok) {
         console.error("❌ Failed to prefetch posts:", response.statusText);
@@ -90,18 +88,15 @@ const CreateProfile = () => {
 
     try {
       // ✅ Step 1: Create Profile API
-      const profileResponse = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/user/profile/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-          body: JSON.stringify(profileData),
-        }
-      );
+      const profileResponse = await fetch(`${api}/user/profile/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify(profileData),
+      });
 
       if (!profileResponse.ok) {
         console.error("❌ Profile creation failed!");
@@ -143,17 +138,14 @@ const CreateProfile = () => {
       if (fileInput.files[0]) {
         formData.append("image", fileInput.files[0]);
 
-        const uploadResponse = await fetch(
-          "https://hook4startup-bakend-java-dev.onrender.com/cloudinary/profile/create",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-            credentials: "include",
-            body: formData,
-          }
-        );
+        const uploadResponse = await fetch(`${api}/cloudinary/profile/create`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          credentials: "include",
+          body: formData,
+        });
 
         if (!uploadResponse.ok) {
           console.error("❌ Image upload failed!");

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"; // ✅ Navigation ke liye
 import "./Postpage.css";
 import Footer from "../../components/footer/Footer";
 import { getToken } from "../../pages/feed/Feed";
+import api from "../../../api/api";
 
 const Postpage = () => {
   const token = getToken(); // ✅ Token ko get karne ke liye
@@ -18,20 +19,17 @@ const Postpage = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/post/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ Token sahi se bhej raha hai
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            content: content, // ✅ Payload bhejo
-          }),
-        }
-      );
+      const response = await fetch(`${api}/post/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // ✅ Token sahi se bhej raha hai
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          content: content, // ✅ Payload bhejo
+        }),
+      });
 
       if (response.ok) {
         console.log("✅ Post Created Successfully!");

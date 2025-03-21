@@ -1,6 +1,7 @@
 import { getToken } from "../../pages/feed/Feed"; // ✅ Token import
 import "./Card.css";
 import React, { useState } from "react";
+import api from "../../../api/api";
 
 const Card = ({ post }) => {
   const token = getToken(); // ✅ Token ko get karne ke liye
@@ -20,20 +21,17 @@ const Card = ({ post }) => {
     });
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/like/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, // ✅ Token sahi se bhej raha hai
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            postId: post.postId, // ✅ ID ko sahi bhej raha hai
-          }),
-        }
-      );
+      const response = await fetch(`${api}/like/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // ✅ Token sahi se bhej raha hai
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          postId: post.postId, // ✅ ID ko sahi bhej raha hai
+        }),
+      });
 
       // 🔎 Check response content type for debugging
       const contentType = response.headers.get("content-type");
@@ -69,21 +67,18 @@ const Card = ({ post }) => {
     });
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/comment/create",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-          body: JSON.stringify({
-            postId: post.postId,
-            comment: "Nice post!",
-          }),
-        }
-      );
+      const response = await fetch(`${api}/comment/create`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+        body: JSON.stringify({
+          postId: post.postId,
+          comment: "Nice post!",
+        }),
+      });
 
       // 🛑 Error ko handle karo
       if (!response.ok) {
@@ -126,10 +121,6 @@ const Card = ({ post }) => {
             className={`ri-heart-3-line ${liked ? "liked" : ""}`}
             onClick={handleLike}
           ></i>
-          <span className="like-count">
-            {post.numberOfLike > 0 ? `${post.numberOfLike}` : ""}
-          </span>
-
           <i className="ri-chat-3-line" onClick={handleComment}></i>
           <i className="ri-share-circle-line"></i>
         </div>

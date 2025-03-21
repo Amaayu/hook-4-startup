@@ -7,7 +7,7 @@ import CreateProfile from "./pages/createprofile/CreateProfile";
 import Postpage from "./pages/post/Postpage";
 import EditProfile from "./pages/editprofile/Editprofile";
 import Notification from "./pages/notification/Notification";
-import Meetup from "./pages/Meetup/Meetup";
+import Meetup from "./pages/meetup/Meetup";
 import Search from "./pages/Search/Search";
 
 // ✅ Add this inside <Routes>

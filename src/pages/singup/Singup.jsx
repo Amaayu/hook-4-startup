@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import "./Singup.css";
+import api from "../../../api/api";
 
 const Signup = () => {
   const [userIsLoading, setUserIsLoading] = useState(false);
@@ -9,7 +10,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  // ✅ Navigate to /feed if user is authenticated
+  // ✅ Navigate to /feed if user is authenticatedß
   useEffect(() => {
     if (userIsLoading) {
       navigate("/feed");
@@ -22,15 +23,12 @@ const Signup = () => {
     const paylode = { username, email, password };
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/auth/signup",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(paylode),
-          credentials: "include", // ✅ Allow cookies
-        }
-      );
+      const response = await fetch(`${api}/auth/signup`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paylode),
+        credentials: "include", // ✅ Allow cookies
+      });
 
       if (response.ok) {
         const data = await response.json();

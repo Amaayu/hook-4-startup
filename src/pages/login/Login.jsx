@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import Cookies from "js-cookie"; // ✅ Token ke liye
 import "./Login.css";
+import api from "../../../api/api";
 
 const Login = () => {
   const [userIsLoading, setUserIsLoading] = useState(false);
@@ -34,17 +35,14 @@ const Login = () => {
         return;
       }
 
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/post/all",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${api}/post/all`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (!response.ok) {
         console.error("❌ Failed to prefetch posts:", response.statusText);
@@ -66,15 +64,12 @@ const Login = () => {
     const data = { username, password };
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data),
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${api}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
 
       if (response.ok) {
         const data = await response.json();

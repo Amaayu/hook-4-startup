@@ -4,6 +4,7 @@ import Footer from "../../components/footer/Footer";
 import Card from "../../components/card/Card";
 import Cookies from "js-cookie"; // ✅ Cookies get karne ke liye
 import { useNavigate } from "react-router-dom";
+import api from "../../../api/api";
 
 // ✅ Token ko return karo
 const getToken = () => {
@@ -41,17 +42,14 @@ const Feed = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://hook4startup-bakend-java-dev.onrender.com/post/all",
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          credentials: "include",
-        }
-      );
+      const response = await fetch(`${api}/post/all`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
+      });
 
       if (!response.ok) {
         console.error(
