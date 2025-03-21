@@ -15,7 +15,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: "http://localhost:8081", // ⚡️ Backend ka URL
+        target: "https://hook4startup-bakend-java-dev.onrender.com", // ⚡️ Backend ka URL
         changeOrigin: true,
         secure: true, // Agar https pe issue ho to
         rewrite: (path) => path.replace(/^\/api/, ""),
