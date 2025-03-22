@@ -5,8 +5,11 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    // Proxy ko yahan se hata do
-    host: true, // Docker ke liye zaroori
-    port: 3000,
+    host: "0.0.0.0", // ✅ Docker ke liye ye set karo
+    port: 3000, // ✅ Port wahi rakhna
+  },
+  preview: {
+    port: 3000, // ✅ Preview ke liye bhi same port
+    host: "0.0.0.0", // ✅ Docker me accessible
   },
 });
